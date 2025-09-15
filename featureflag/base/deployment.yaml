@@ -37,7 +37,7 @@ spec:
       
       containers:
         - name: featureflag
-          image: docker.io/cahityusuf/featureflag:v68
+          image: docker.io/cahityusuf/featureflag:v69
           command: ["/bin/sh", "-c"]
           args:
             - |
