@@ -21,22 +21,32 @@ spec:
         app: featureflag
         service: featureflag
       annotations:
-        vault.hashicorp.com/agent-inject: 'false'
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'featureflag'
+        vault.hashicorp.com/agent-inject-secret-env: 'secret/data/featureflag'
+        vault.hashicorp.com/agent-inject-template-env: |
+          {{ with secret "secret/data/featureflag" }}
+          {{ range $k, $v := .Data.data }}
+          {{ $k }}='{{ $v }}'
+          {{ end }}
+          {{ end }}
     spec:
       serviceAccountName: featureflag
       imagePullSecrets:
       - name: featureflag-registry-secret
-      volumes:
-      - name: config-volume
-        configMap:
-          name: featureflag-config
+      
       containers:
         - name: featureflag
           image: docker.io/cahityusuf/featureflag:v68
           command: ["/bin/sh", "-c"]
           args:
             - |
-              exec dotnet FeatureFlag.dll
+              set +x
+                if [ -f /vault/secrets/env ]; then
+                    grep -v '^#' /vault/secrets/env | sed 's/^/export /' > /tmp/formatted_env
+                    . /tmp/formatted_env >/dev/null 2>&1
+                fi
+                exec dotnet FeatureFlag.dll
           ports:
           - name: http
             containerPort: 80
@@ -48,9 +58,5 @@ spec:
             limits:
               memory: 512Mi
               cpu: 500m     
-          envFrom:
-            - configMapRef:
-                name: featureflag-config
-          volumeMounts:
-            - name: config-volume
-              mountPath: /etc/config         
+          
+                   
