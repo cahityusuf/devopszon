@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: featureflag
+  name: featureflag
+  labels:
+    app: featureflag
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      service: featureflag
+  template:
+    metadata:
+      labels:
+        app: featureflag
+        service: featureflag
+      annotations:
+        vault.hashicorp.com/agent-inject: 'false'
+    spec:
+      serviceAccountName: featureflag
+      imagePullSecrets:
+      - name: featureflag-registry-secret
+      volumes:
+      - name: config-volume
+        configMap:
+          name: featureflag-config
+      containers:
+        - name: featureflag
+          image: docker.io/cahityusuf/featureflag:v68
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              exec dotnet FeatureFlag.dll
+          ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 500m     
+          envFrom:
+            - configMapRef:
+                name: featureflag-config
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config         
