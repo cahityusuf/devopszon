@@ -7,7 +7,7 @@
 # featureflag - Uygulama ve Route adı için kullanılır
 # featureflag - Uygulamanın bulunduğu namespace
 # 80 - Kubernetes Service portu
-# devopszon.com - Erişilecek host adı (örn: devopszon.com)
+# featureflag.devopszon.com - Erişilecek host adı (örn: devopszon.com)
 # ./featureflag/apisix - Erişilecek path (örn: /api/benim-uygulamam)
 # featureflag - Hedef Kubernetes Service'in adı
 
@@ -21,7 +21,7 @@ spec:
   - name: featureflag-rule
     match:
       hosts:
-      - devopszon.com
+      - featureflag.devopszon.com
       paths:
       # DİKKAT: Path'in sonuna "/*" eklenmesi, alt yolların da yakalanmasını sağlar.
       # Örneğin /api/app/* -> /api/app/login, /api/app/users gibi tüm istekleri karşılar.
