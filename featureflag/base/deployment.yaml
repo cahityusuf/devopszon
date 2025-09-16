@@ -26,7 +26,10 @@ spec:
       serviceAccountName: featureflag
       imagePullSecrets:
       - name: featureflag-registry-secret
-      
+      volumes:
+      - name: config-volume
+        configMap:
+          name: featureflag-config
       containers:
         - name: featureflag
           image: docker.io/cahityusuf/featureflag:v3
@@ -45,5 +48,9 @@ spec:
             limits:
               memory: 512Mi
               cpu: 500m     
-          
-                   
+          envFrom:
+            - configMapRef:
+                name: featureflag-config
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config         

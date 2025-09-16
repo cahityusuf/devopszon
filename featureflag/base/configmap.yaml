@@ -4,4 +4,4 @@ metadata:
   name: featureflag-config
   namespace: featureflag
 data:
-  deneme: unsensitive
+  sensitive: test
