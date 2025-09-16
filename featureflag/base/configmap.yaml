@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: featureflag-config
-  namespace: featureflag
-data:
-  sensitive: test

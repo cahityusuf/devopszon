@@ -21,22 +21,19 @@ spec:
         app: featureflag
         service: featureflag
       annotations:
-        vault.hashicorp.com/agent-inject: 'false'
+        
     spec:
       serviceAccountName: featureflag
       imagePullSecrets:
       - name: featureflag-registry-secret
-      volumes:
-      - name: config-volume
-        configMap:
-          name: featureflag-config
+      
       containers:
         - name: featureflag
           image: docker.io/cahityusuf/featureflag:v3
           command: ["/bin/sh", "-c"]
           args:
             - |
-              exec dotnet FeatureFlag.dll
+              exec $(entrypointCmd)
           ports:
           - name: http
             containerPort: 80
@@ -48,9 +45,5 @@ spec:
             limits:
               memory: 512Mi
               cpu: 500m     
-          envFrom:
-            - configMapRef:
-                name: featureflag-config
-          volumeMounts:
-            - name: config-volume
-              mountPath: /etc/config         
+          
+                   
