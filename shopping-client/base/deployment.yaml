@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: shopping
+  name: shopping-client
+  labels:
+    app: shopping-client
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      service: shopping-client
+  template:
+    metadata:
+      labels:
+        app: shopping-client
+        service: shopping-client
+      annotations:
+        vault.hashicorp.com/agent-inject: 'false'
+    spec:
+      serviceAccountName: shopping-client
+      imagePullSecrets:
+      - name: shopping-client-registry-secret
+      
+      containers:
+        - name: shopping-client
+          image: docker.io/cahityusuf/shopping-client:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              exec dotnet Shopping.Client.dll
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 500m     
+          
+                   
