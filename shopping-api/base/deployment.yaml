@@ -47,7 +47,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: shopping-api
-          image: docker.io/cahityusuf/shopping-api:v17
+          image: docker.io/cahityusuf/shopping-api:v18
           command: ["/bin/sh", "-c"]
           args:
             - |
