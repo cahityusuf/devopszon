@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shopping-api-config
+  namespace: shopping-api-3a1c92747b4efbbb12af291c1e5b79f4
+data:
+  
