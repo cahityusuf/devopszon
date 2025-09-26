@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: shopping-api-3a1c92747b4efbbb12af291c1e5b79f4
+  namespace: shopping-api-3a1c99d4387a71c4438c1a6012f56415
   name: shopping-api
   labels:
     app: shopping-api
-    project-id: shopping-api-3a1c9274-7b3f-dd46-8378-3cc9139f87a9
+    project-id: shopping-api-3a1c99d4-3818-cbbc-53fa-79addc57819f
 spec:
   replicas: 1
   strategy:
@@ -16,23 +16,15 @@ spec:
   selector:
     matchLabels:
       service: shopping-api
-      project-id: shopping-api-3a1c9274-7b3f-dd46-8378-3cc9139f87a9
+      project-id: shopping-api-3a1c99d4-3818-cbbc-53fa-79addc57819f
   template:
     metadata:
       labels:
         app: shopping-api
         service: shopping-api
-        project-id: shopping-api-3a1c9274-7b3f-dd46-8378-3cc9139f87a9
+        project-id: shopping-api-3a1c99d4-3818-cbbc-53fa-79addc57819f
       annotations:
-        vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'shopping-api'
-        vault.hashicorp.com/agent-inject-secret-env: 'secret/data/shopping-api'
-        vault.hashicorp.com/agent-inject-template-env: |
-          {{ with secret "secret/data/shopping-api" }}
-          {{ range $k, $v := .Data.data }}
-          {{ $k }}='{{ $v }}'
-          {{ end }}
-          {{ end }}
+        vault.hashicorp.com/agent-inject: 'false'
     spec:
       serviceAccountName: shopping-api
       imagePullSecrets:
@@ -47,16 +39,11 @@ spec:
           type: RuntimeDefault
       containers:
         - name: shopping-api
-          image: docker.io/cahityusuf/shopping-api:v18
+          image: docker.io/cahityusuf/shopping-api:latest
           command: ["/bin/sh", "-c"]
           args:
             - |
-              set +x
-                if [ -f /vault/secrets/env ]; then
-                    grep -v '^#' /vault/secrets/env | sed 's/^/export /' > /tmp/formatted_env
-                    . /tmp/formatted_env >/dev/null 2>&1
-                fi
-                exec dotnet Shopping.API.dll
+              exec dotnet Shopping.API.dll
           ports:
           - name: http
             containerPort: 80
@@ -77,10 +64,10 @@ spec:
                 - SETUID
           resources:
             requests:
-              memory: 256Mi
-              cpu: 100m
+              memory: 1Gi
+              cpu: 2
             limits:
-              memory: 512Mi
-              cpu: 500m     
+              memory: 1Gi
+              cpu: 2     
           
              
