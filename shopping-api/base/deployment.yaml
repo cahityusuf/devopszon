@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: shopping-api-3a1cab7a0110890cf10d72409ba5d1c6
+  namespace: shopping-api-3a1cac972c6742b1d71b67974b2707fe
   name: shopping-api
   labels:
     app: shopping-api
-    project-id: shopping-api-3a1c99d4-3818-cbbc-53fa-79addc57819f
+    project-id: shopping-api-3a1cac97-2b28-e42b-f14e-2c029e513b82
 spec:
   replicas: 1
   strategy:
@@ -16,13 +16,13 @@ spec:
   selector:
     matchLabels:
       service: shopping-api
-      project-id: shopping-api-3a1c99d4-3818-cbbc-53fa-79addc57819f
+      project-id: shopping-api-3a1cac97-2b28-e42b-f14e-2c029e513b82
   template:
     metadata:
       labels:
         app: shopping-api
         service: shopping-api
-        project-id: shopping-api-3a1c99d4-3818-cbbc-53fa-79addc57819f
+        project-id: shopping-api-3a1cac97-2b28-e42b-f14e-2c029e513b82
       annotations:
         vault.hashicorp.com/agent-inject: 'false'
     spec:
@@ -107,7 +107,7 @@ spec:
         emptyDir: {}
       containers:
         - name: shopping-api
-          image: docker.io/cahityusuf/shopping-api:v1
+          image: docker.io/cahityusuf/shopping-api:latest
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -135,10 +135,10 @@ spec:
                 - NET_BIND_SERVICE
           resources:
             requests:
-              memory: 1Gi
-              cpu: 2
+              memory: 512Mi
+              cpu: 0.5
             limits:
-              memory: 1Gi
-              cpu: 2     
+              memory: 512Mi
+              cpu: 0.5     
           
              
