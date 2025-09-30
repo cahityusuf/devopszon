@@ -37,9 +37,77 @@ spec:
         fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
+      initContainers:
+        - name: fix-permissions
+          image: busybox:1.35
+          command: ['sh', '-c']
+          args:
+            - |
+              echo 'Fixing permissions for application directories...'
+              # Uygulama dizinini environment variable'dan al, yoksa /app kullan
+              APP_DIR=${APP_WORKING_DIR:-/app}
+              echo "Working directory: $APP_DIR"
+              
+              # Dizin varsa izinleri düzenle
+              if [ -d "$APP_DIR" ]; then
+                chown -R 1000:1000 "$APP_DIR"
+                chmod -R 755 "$APP_DIR"
+                echo "Permissions fixed for $APP_DIR"
+              else
+                echo "Directory $APP_DIR not found, creating it..."
+                mkdir -p "$APP_DIR"
+                chown -R 1000:1000 "$APP_DIR"
+                chmod -R 755 "$APP_DIR"
+                echo "Created and fixed permissions for $APP_DIR"
+              fi
+              
+              # Yaygın uygulama dizinlerini de kontrol et
+              for dir in /app /usr/src/app /var/www /opt/app /home/app; do
+                if [ -d "$dir" ] && [ "$dir" != "$APP_DIR" ]; then
+                  echo "Fixing permissions for common directory: $dir"
+                  chown -R 1000:1000 "$dir"
+                  chmod -R 755 "$dir"
+                fi
+              done
+              
+              echo 'Permission fixing completed successfully'
+          env:
+            - name: APP_WORKING_DIR
+              value: '/app'
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: true
+            capabilities:
+              add:
+                - CHOWN
+                - FOWNER
+                - DAC_OVERRIDE
+          volumeMounts:
+            - name: app-volume
+              mountPath: /app
+            - name: usr-src-app-volume
+              mountPath: /usr/src/app
+            - name: var-www-volume
+              mountPath: /var/www
+            - name: opt-app-volume
+              mountPath: /opt/app
+            - name: home-app-volume
+              mountPath: /home/app
+      volumes:
+      - name: app-volume
+        emptyDir: {}
+      - name: usr-src-app-volume
+        emptyDir: {}
+      - name: var-www-volume
+        emptyDir: {}
+      - name: opt-app-volume
+        emptyDir: {}
+      - name: home-app-volume
+        emptyDir: {}
       containers:
         - name: shopping-api
-          image: docker.io/cahityusuf/shopping-api:v2
+          image: docker.io/cahityusuf/shopping-api:v1
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -62,6 +130,9 @@ spec:
                 - FOWNER
                 - SETGID
                 - SETUID
+                - DAC_OVERRIDE
+                - FSETID
+                - NET_BIND_SERVICE
           resources:
             requests:
               memory: 1Gi
