@@ -5,7 +5,7 @@
 #
 # Template parametreleri:
 # shopping-api - Uygulama ve Route adı için kullanılır
-# shopping-api-3a1cac972c6742b1d71b67974b2707fe - Uygulamanın bulunduğu namespace
+# shopping-api-3a1cac9f76be5093ad301c971ced745b - Uygulamanın bulunduğu namespace
 # 80 - Kubernetes Service portu
 # devopszon.com - Erişilecek host adı (örn: devopszon.com)
 # ./shopping-api/apisix - Erişilecek path (örn: /api/benim-uygulamam)
@@ -15,7 +15,7 @@ apiVersion: apisix.apache.org/v2
 kind: ApisixRoute
 metadata:
   name: shopping-api-route
-  namespace: shopping-api-3a1cac972c6742b1d71b67974b2707fe
+  namespace: shopping-api-3a1cac9f76be5093ad301c971ced745b
 spec:
   http:
   - name: shopping-api-rule
