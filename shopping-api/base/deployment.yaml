@@ -37,20 +37,9 @@ spec:
         fsGroup: 1000
         seccompProfile:
           type: RuntimeDefault
-      volumes:
-      - name: app-volume
-        emptyDir: {}
-      - name: usr-src-app-volume
-        emptyDir: {}
-      - name: var-www-volume
-        emptyDir: {}
-      - name: opt-app-volume
-        emptyDir: {}
-      - name: home-app-volume
-        emptyDir: {}
       containers:
         - name: shopping-api
-          image: docker.io/cahityusuf/shopping-api:latest
+          image: docker.io/cahityusuf/shopping-api:v1
           command: ["/bin/sh", "-c"]
           args:
             - |
