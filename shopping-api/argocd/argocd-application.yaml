@@ -13,7 +13,7 @@ spec:
     path: ./shopping-api/base
   destination:
     server: https://kubernetes.default.svc
-    namespace: shopping-api-3a1c99d4387a71c4438c1a6012f56415
+    namespace: shopping-api-3a1cab7a0110890cf10d72409ba5d1c6
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
