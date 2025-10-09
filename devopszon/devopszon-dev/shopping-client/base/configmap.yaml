@@ -4,4 +4,4 @@ metadata:
   name: shopping-client-config
   namespace: shopping-client-3a1cdc47cce64407ba29403503cbd2f6
 data:
-  deneme1: "test1"
+  denem2: "test2"
