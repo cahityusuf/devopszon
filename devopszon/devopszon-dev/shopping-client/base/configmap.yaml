@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: shopping-client-config
-  namespace: shopping-client-3a1cdc47cce64407ba29403503cbd2f6
-data:
-  denem1: "test1"
