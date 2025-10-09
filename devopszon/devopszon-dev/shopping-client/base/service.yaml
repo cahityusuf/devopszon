@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: shopping-client
-  namespace: shopping-client-3a1cdc032f2427465d1a2b1e6b18ba2b
+  namespace: shopping-client-3a1cdc1953be0abb6fc23c40f425857c
   labels:
     app: shopping-client
     service: shopping-client

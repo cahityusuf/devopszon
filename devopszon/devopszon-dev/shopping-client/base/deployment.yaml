@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: shopping-client-3a1cdc032f2427465d1a2b1e6b18ba2b
+  namespace: shopping-client-3a1cdc1953be0abb6fc23c40f425857c
   name: shopping-client
   labels:
     app: shopping-client
-    project-id: shopping-client-3a1cdc03-2cd6-f6bb-6215-65e5b6658cba
+    project-id: shopping-client-3a1cdc19-5164-6105-3356-c7467121f01d
 spec:
   replicas: 1
   strategy:
@@ -16,23 +16,15 @@ spec:
   selector:
     matchLabels:
       service: shopping-client
-      project-id: shopping-client-3a1cdc03-2cd6-f6bb-6215-65e5b6658cba
+      project-id: shopping-client-3a1cdc19-5164-6105-3356-c7467121f01d
   template:
     metadata:
       labels:
         app: shopping-client
         service: shopping-client
-        project-id: shopping-client-3a1cdc03-2cd6-f6bb-6215-65e5b6658cba
+        project-id: shopping-client-3a1cdc19-5164-6105-3356-c7467121f01d
       annotations:
-        vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'shopping-client'
-        vault.hashicorp.com/agent-inject-secret-env: 'secret/data/shopping-client'
-        vault.hashicorp.com/agent-inject-template-env: |
-          {{ with secret "secret/data/shopping-client" }}
-          {{ range $k, $v := .Data.data }}
-          {{ $k }}='{{ $v }}'
-          {{ end }}
-          {{ end }}
+        vault.hashicorp.com/agent-inject: 'false'
     spec:
       serviceAccountName: shopping-client
       imagePullSecrets:
@@ -51,12 +43,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              set +x
-                if [ -f /vault/secrets/env ]; then
-                    grep -v '^#' /vault/secrets/env | sed 's/^/export /' > /tmp/formatted_env
-                    . /tmp/formatted_env >/dev/null 2>&1
-                fi
-                exec dotnet Shopping.Client.dll
+              exec dotnet Shopping.Client.dll
           ports:
           - name: http
             containerPort: 8080
@@ -78,7 +65,6 @@ spec:
                 - DAC_OVERRIDE
                 - FSETID
                 - NET_BIND_SERVICE
-            fsGroup: 1000
           resources:
             requests:
               memory: 512Mi
