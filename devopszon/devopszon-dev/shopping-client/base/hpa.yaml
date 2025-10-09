@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: shopping-client
-  namespace: shopping-client-3a1cdbe5eb14220a5561b74ad6fd816f
+  namespace: shopping-client-3a1cdbf2d9c4ee8c2a94bb7f3f88912d
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
