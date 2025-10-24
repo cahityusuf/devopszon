@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: deneme3
+  namespace: shopping-api-3a1d28688f3bd17eb864e127b1a20653
   name: shopping-api
   labels:
     app: shopping-api
-    project-id: shopping-api-3a1d285a-8538-ac0d-7ffe-bcdc7ca8c09b
+    project-id: shopping-api-3a1d2868-8f21-9037-08bd-28dc06037175
 spec:
   replicas: 1
   strategy:
@@ -16,13 +16,13 @@ spec:
   selector:
     matchLabels:
       service: shopping-api
-      project-id: shopping-api-3a1d285a-8538-ac0d-7ffe-bcdc7ca8c09b
+      project-id: shopping-api-3a1d2868-8f21-9037-08bd-28dc06037175
   template:
     metadata:
       labels:
         app: shopping-api
         service: shopping-api
-        project-id: shopping-api-3a1d285a-8538-ac0d-7ffe-bcdc7ca8c09b
+        project-id: shopping-api-3a1d2868-8f21-9037-08bd-28dc06037175
       annotations:
         vault.hashicorp.com/agent-inject: 'false'
     spec:
@@ -68,9 +68,9 @@ spec:
           resources:
             requests:
               memory: 512Mi
-              cpu: 500m
+              cpu: 0.5
             limits:
-              memory: 1Gi
-              cpu: 1     
+              memory: 512Mi
+              cpu: 0.5     
           
              

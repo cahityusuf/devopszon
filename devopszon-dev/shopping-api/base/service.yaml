@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: shopping-api
-  namespace: deneme3
+  namespace: shopping-api-3a1d28688f3bd17eb864e127b1a20653
   labels:
     app: shopping-api
     service: shopping-api
