@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: deneme3
+  name: shopping-api
+  labels:
+    app: shopping-api
+    project-id: shopping-api-3a1d285a-8538-ac0d-7ffe-bcdc7ca8c09b
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      service: shopping-api
+      project-id: shopping-api-3a1d285a-8538-ac0d-7ffe-bcdc7ca8c09b
+  template:
+    metadata:
+      labels:
+        app: shopping-api
+        service: shopping-api
+        project-id: shopping-api-3a1d285a-8538-ac0d-7ffe-bcdc7ca8c09b
+      annotations:
+        vault.hashicorp.com/agent-inject: 'false'
+    spec:
+      serviceAccountName: shopping-api
+      imagePullSecrets:
+      - name: shopping-api-registry-secret
+      
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: shopping-api
+          image: docker.io/cahityusuf/shopping-api:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              exec dotnet Shopping.API.dll
+          ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - CHOWN
+                - FOWNER
+                - SETGID
+                - SETUID
+                - DAC_OVERRIDE
+                - FSETID
+                - NET_BIND_SERVICE
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 500m
+            limits:
+              memory: 1Gi
+              cpu: 1     
+          
+             
