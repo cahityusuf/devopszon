@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: featureflag
+  namespace: featureflag
+  labels:
+    app: featureflag
+    service: featureflag
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+      name: http
+  selector:
+    service: featureflag
+  
