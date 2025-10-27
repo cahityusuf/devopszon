@@ -10,8 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-send-timeout: '60'
     nginx.ingress.kubernetes.io/rewrite-target: '/'
     cert-manager.io/cluster-issuer: 'letsencrypt-prod'
-    nginx.ingress.kubernetes.io/ssl-redirect: 'false'
-    deneme: 'test'
+    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
 spec:
   ingressClassName: nginx
   rules:
