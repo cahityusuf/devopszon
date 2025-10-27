@@ -10,7 +10,7 @@ spec:
       - name: featureflag
         readinessProbe:
           httpGet:
-            path: /health
+            path: /healthh
             port: 80
             scheme: HTTP
           tcpSocket: 
@@ -22,7 +22,7 @@ spec:
           failureThreshold: 3
         livenessProbe:
           httpGet:
-            path: /health
+            path: /healthh
             port: 80
             scheme: HTTP
           tcpSocket: 
