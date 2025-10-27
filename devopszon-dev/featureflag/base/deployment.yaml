@@ -8,28 +8,3 @@ spec:
     spec:
       containers:
       - name: featureflag
-        readinessProbe:
-          httpGet:
-            path: /healthh
-            port: 80
-            scheme: HTTP
-          tcpSocket: 
-          exec: 
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 3
-        livenessProbe:
-          httpGet:
-            path: /healthh
-            port: 80
-            scheme: HTTP
-          tcpSocket: 
-          exec: 
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 3
-        startupProbe: 
