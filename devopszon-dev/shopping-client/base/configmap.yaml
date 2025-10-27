@@ -4,4 +4,4 @@ metadata:
   name: shopping-client-config
   namespace: shopping
 data:
-  unsensitive: "unsensitive-testt"
+  unsensitive: "unsensitive-testtt"
