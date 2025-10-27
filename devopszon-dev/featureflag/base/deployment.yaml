@@ -1,76 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: featureflag
   name: featureflag
-  labels:
-    app: featureflag
-    project-id: featureflag-3a1d33da-b876-a045-452b-10fae53cbabc
+  namespace: featureflag
 spec:
-  replicas: 1
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-  selector:
-    matchLabels:
-      service: featureflag
-      project-id: featureflag-3a1d33da-b876-a045-452b-10fae53cbabc
   template:
-    metadata:
-      labels:
-        app: featureflag
-        service: featureflag
-        project-id: featureflag-3a1d33da-b876-a045-452b-10fae53cbabc
-      annotations:
-        vault.hashicorp.com/agent-inject: 'false'
     spec:
-      serviceAccountName: featureflag
-      imagePullSecrets:
-      - name: featureflag-registry-secret
-      
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        seccompProfile:
-          type: RuntimeDefault
       containers:
-        - name: featureflag
-          image: docker.io/cahityusuf/featureflag:latest
-          command: ["/bin/sh", "-c"]
-          args:
-            - |
-              exec dotnet FeatureFlag.dll
-          ports:
-          - name: http
-            containerPort: 80
-            protocol: TCP
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: false
-            runAsNonRoot: true
-            runAsUser: 1000
-            runAsGroup: 1000
-            capabilities:
-              drop:
-                - ALL
-              add:
-                - CHOWN
-                - FOWNER
-                - SETGID
-                - SETUID
-                - DAC_OVERRIDE
-                - FSETID
-                - NET_BIND_SERVICE
-          resources:
-            requests:
-              memory: 512Mi
-              cpu: 500m
-            limits:
-              memory: 1Gi
-              cpu: 1     
-          
-             
+      - name: featureflag
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+            scheme: HTTP
+          tcpSocket: 
+          exec: 
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+            scheme: HTTP
+          tcpSocket: 
+          exec: 
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        startupProbe: 
