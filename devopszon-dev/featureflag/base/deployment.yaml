@@ -5,7 +5,7 @@ metadata:
   name: featureflag
   labels:
     app: featureflag
-    project-id: featureflag-3a1d33da-b876-a045-452b-10fae53cbabc
+    project-id: featureflag-3a1d4c0e-f970-7dca-42c3-d2248623daca
 spec:
   replicas: 1
   strategy:
@@ -16,13 +16,13 @@ spec:
   selector:
     matchLabels:
       service: featureflag
-      project-id: featureflag-3a1d33da-b876-a045-452b-10fae53cbabc
+      project-id: featureflag-3a1d4c0e-f970-7dca-42c3-d2248623daca
   template:
     metadata:
       labels:
         app: featureflag
         service: featureflag
-        project-id: featureflag-3a1d33da-b876-a045-452b-10fae53cbabc
+        project-id: featureflag-3a1d4c0e-f970-7dca-42c3-d2248623daca
       annotations:
         vault.hashicorp.com/agent-inject: 'false'
     spec:
@@ -39,7 +39,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: featureflag
-          image: docker.io/cahityusuf/featureflag:v1
+          image: docker.io/cahityusuf/featureflag:latest
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -72,4 +72,6 @@ spec:
               cpu: 500m
             limits:
               memory: 1Gi
-              cpu: 1     
+              cpu: 1
+          
+             

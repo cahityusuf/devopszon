@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com:443/cahityusuf/devopszon.git
     targetRevision: HEAD
-    path: devopszon-dev/featureflag/base
+    path: devopszon-dev/featureflag
   destination:
     server: https://kubernetes.default.svc
     namespace: featureflag
