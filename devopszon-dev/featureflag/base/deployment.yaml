@@ -39,7 +39,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: featureflag
-          image: docker.io/cahityusuf/featureflag:latest
+          image: docker.io/cahityusuf/featureflag:v1-logtest
           command: ["/bin/sh", "-c"]
           args:
             - |
