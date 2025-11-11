@@ -1,0 +1,64 @@
+# EventSource ClusterRole - Tüm namespace'lerde resource okuma izni
+# EventSource pod'ları farklı namespace'lerdeki Kubernetes resource'larını izleyebilmeli
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: devopszon-eventsource-reader
+  labels:
+    app: devopszon-monitoring
+    managed-by: devopszon
+rules:
+  # Core resources
+  - apiGroups: [""]
+    resources:
+      - pods
+      - services
+      - configmaps
+      - secrets
+    verbs: ["get", "list", "watch"]
+  
+  # Apps resources
+  - apiGroups: ["apps"]
+    resources:
+      - deployments
+      - replicasets
+      - statefulsets
+      - daemonsets
+    verbs: ["get", "list", "watch"]
+  
+  # Autoscaling resources
+  - apiGroups: ["autoscaling"]
+    resources:
+      - horizontalpodautoscalers
+    verbs: ["get", "list", "watch"]
+  
+  # Networking resources
+  - apiGroups: ["networking.k8s.io"]
+    resources:
+      - ingresses
+      - networkpolicies
+    verbs: ["get", "list", "watch"]
+  
+  # Batch resources (optional)
+  - apiGroups: ["batch"]
+    resources:
+      - jobs
+      - cronjobs
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: devopszon-eventsource-reader-binding
+  labels:
+    app: devopszon-monitoring
+    managed-by: devopszon
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: devopszon-eventsource-reader
+subjects:
+  - kind: ServiceAccount
+    name: default  # EventSource pod'ları argo-events namespace'inde default SA kullanır
+    namespace: argo-events
+

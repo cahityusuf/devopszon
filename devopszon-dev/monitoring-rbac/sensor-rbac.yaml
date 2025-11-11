@@ -1,0 +1,71 @@
+# ServiceAccount for DevOpsZon Sensor
+# Based on: https://argoproj.github.io/argo-events/tutorials/01-introduction/
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: devopszon-sensor-sa
+  namespace: argo-events
+  labels:
+    app: devopszon-monitoring
+    managed-by: devopszon
+---
+# Role: Allow Sensor to trigger HTTP requests
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: devopszon-sensor-role
+  namespace: argo-events
+  labels:
+    app: devopszon-monitoring
+    managed-by: devopszon
+rules:
+  # Sensor needs to read EventBus
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - eventbus
+    verbs:
+      - get
+      - list
+      - watch
+  # Sensor needs to update its own status
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - sensors
+      - sensors/status
+    verbs:
+      - get
+      - list
+      - watch
+      - update
+      - patch
+  # Sensor needs to read ConfigMaps and Secrets for configuration
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+---
+# RoleBinding: Bind Role to ServiceAccount
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: devopszon-sensor-role-binding
+  namespace: argo-events
+  labels:
+    app: devopszon-monitoring
+    managed-by: devopszon
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: devopszon-sensor-role
+subjects:
+  - kind: ServiceAccount
+    name: devopszon-sensor-sa
+    namespace: argo-events
+
