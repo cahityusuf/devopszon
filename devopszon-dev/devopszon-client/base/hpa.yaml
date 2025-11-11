@@ -8,7 +8,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: devopszon-client
-  maxReplicas: 3
+  maxReplicas: 1
   minReplicas: 1
   metrics:
   - type: Resource
