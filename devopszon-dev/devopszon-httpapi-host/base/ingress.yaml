@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: httpapi.devopszon.com
+    - host: api.devopszon.com
       http:
         paths:
           - path: /
@@ -20,5 +20,5 @@ spec:
                   number: 8080
   tls:
   - hosts:
-    - httpapi.devopszon.com
+    - api.devopszon.com
     secretName: devopszon-httpapi-host-ingress-secret
