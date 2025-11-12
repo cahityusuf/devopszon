@@ -1,0 +1,48 @@
+---
+# Apisix Application Template (Updated)
+# Bu şablon, yeni deploy edilecek uygulamalar için Apisix Route kaynağını oluşturur.
+# Şablon, trafiği doğrudan ilgili Kubernetes Service'ine yönlendirir.
+#
+# Template parametreleri:
+# k8s-agent - Uygulama ve Route adı için kullanılır
+# devopszon - Uygulamanın bulunduğu namespace
+# 8000 - Kubernetes Service portu
+# devopszon.com - Erişilecek host adı (örn: devopszon.com)
+# ./k8s-agent/apisix - Erişilecek path (örn: /api/benim-uygulamam)
+# k8s-agent - Hedef Kubernetes Service'in adı
+
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: k8s-agent-route
+  namespace: devopszon
+spec:
+  http:
+  - name: k8s-agent-rule
+    match:
+      hosts:
+      - devopszon.com
+      paths:
+      # DİKKAT: Path'in sonuna "/*" eklenmesi, alt yolların da yakalanmasını sağlar.
+      # Örneğin /api/app/* -> /api/app/login, /api/app/users gibi tüm istekleri karşılar.
+      - ./k8s-agent/apisix/*
+    backends:
+    # Trafik doğrudan Kubernetes Service'ine yönlendiriliyor.
+    # ApisixUpstream veya ApisixService kaynağına gerek yoktur.
+    - serviceName: k8s-agent
+      servicePort: 8000
+      weight: 100
+    plugins:
+    # CORS (Cross-Origin Resource Sharing) ayarları
+    - name: cors
+      enable: true
+      config:
+        allow_origins: "*"
+        allow_methods: "GET,POST,PUT,DELETE,OPTIONS"
+        allow_headers: "*"
+    # Gelen isteğin path'ini yeniden yazarak servise doğru iletilmesini sağlar.
+    # Örneğin: devopszon.com/api/app/login -> app-servisi:80/login
+    - name: proxy-rewrite
+      enable: true
+      config:
+        regex_uri: ["^./k8s-agent/apisix/(.*)", "/$1"]

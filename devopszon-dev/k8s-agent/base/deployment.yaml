@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: devopszon
+  name: k8s-agent
+  labels:
+    app: k8s-agent
+    project-id: k8s-agent-3a1d6f64-5897-e03b-c4de-b5e698301e9a
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      service: k8s-agent
+      project-id: k8s-agent-3a1d6f64-5897-e03b-c4de-b5e698301e9a
+  template:
+    metadata:
+      labels:
+        app: k8s-agent
+        service: k8s-agent
+        project-id: k8s-agent-3a1d6f64-5897-e03b-c4de-b5e698301e9a
+      annotations:
+        vault.hashicorp.com/agent-inject: 'false'
+    spec:
+      serviceAccountName: k8s-agent
+      imagePullSecrets:
+      - name: k8s-agent-registry-secret
+      volumes:
+      - name: config-volume
+        configMap:
+          name: k8s-agent-config
+      
+      containers:
+        - name: k8s-agent
+          image: docker.io/cahityusuf/k8s-agent:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              exec uvicorn main:app --host 0.0.0.0 --port 8000
+          ports:
+          - name: http
+            containerPort: 8000
+            protocol: TCP
+          
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 500m
+            limits:
+              memory: 1Gi
+              cpu: 1
+          envFrom:
+            - configMapRef:
+                name: k8s-agent-config
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config   
