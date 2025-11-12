@@ -2,14 +2,3 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: placeholder
-spec:
-  template:
-    spec:
-      containers:
-      - name: app
-        volumeMounts:
-        - name: tmp-volume
-          mountPath: /tmp
-      volumes:
-      - name: tmp-volume
-        emptyDir: {}
