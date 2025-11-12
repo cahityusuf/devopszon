@@ -1,6 +1,7 @@
 apiVersion: v1
 data:
   a3: b3
+  a4: b4
   ASPNETCORE_ENVIRONMENT: Production
   ASPNETCORE_URLS: http://+:8080
   App__HealthCheckUrl: http://localhost:8080/health-status
