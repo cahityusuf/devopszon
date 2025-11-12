@@ -18,3 +18,7 @@ spec:
                 name: devopszon-client
                 port:
                   number: 80
+  tls:
+  - hosts:
+    - console.devopszon.com
+    secretName: devopszon-client-ingress-secret
