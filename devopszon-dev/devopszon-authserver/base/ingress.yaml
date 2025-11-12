@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: authserver.devopszon.com
+  - host: auth.devopszon.com
     http:
       paths:
       - backend:
@@ -19,5 +19,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - authserver.devopszon.com
+    - auth.devopszon.com
     secretName: devopszon-authserver-ingress-secret
