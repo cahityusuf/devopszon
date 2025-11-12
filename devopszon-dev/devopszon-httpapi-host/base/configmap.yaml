@@ -20,6 +20,6 @@ data:
   Logging__LogLevel__System.Net.Http.HttpClient: "None"
   Logging__LogLevel__System.Net.Http.HttpClient.health-checks: "None"
   Loki__EnableCache: "false"
-  DevOpsZonAgent__TimeoutSeconds: '300'
+  DevOpsZonAgent__TimeoutSeconds: 300
   Monitoring__ApiEndpoint: "https://api.devopszon.com/api/monitoring/events"
   Logging__LogLevel__Microsoft.AspNetCore.Hosting.Diagnostics: "None"
