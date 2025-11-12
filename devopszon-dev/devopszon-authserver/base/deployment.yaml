@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: devopszon
   name: devopszon-authserver
   labels:
     app: devopszon-authserver
@@ -36,7 +36,7 @@ spec:
       
       containers:
         - name: devopszon-authserver
-          image: docker.io/cahityusuf/devopszon-authserver:v1
+          image: docker.io/cahityusuf/devopszon-authserver:v1.0.0
           command: ["/bin/sh", "-c"]
           args:
             - |

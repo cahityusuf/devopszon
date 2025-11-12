@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   annotations: {}
   name: devopszon-authserver-ingress
-  namespace: default
+  namespace: devopszon
 spec:
   ingressClassName: nginx
   rules:

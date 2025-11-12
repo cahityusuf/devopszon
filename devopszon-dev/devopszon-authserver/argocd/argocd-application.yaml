@@ -13,7 +13,7 @@ spec:
     path: devopszon-dev/devopszon-authserver
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: devopszon
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: devopszon-authserver-hpa
-  namespace: default
+  namespace: devopszon
 spec:
   maxReplicas: 1
   metrics:
