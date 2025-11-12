@@ -12,5 +12,4 @@ spec:
           mountPath: /tmp
       volumes:
       - name: tmp-volume
-        emptyDir:
-          sizeLimit: 1Gi
+        emptyDir: {}
