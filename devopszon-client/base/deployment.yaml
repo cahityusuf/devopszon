@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: devopszon
+  name: devopszon-client
+  labels:
+    app: devopszon-client
+    project-id: devopszon-client-3a1d6f64-58ec-14da-14eb-0403b3d979ef
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      service: devopszon-client
+      project-id: devopszon-client-3a1d6f64-58ec-14da-14eb-0403b3d979ef
+  template:
+    metadata:
+      labels:
+        app: devopszon-client
+        service: devopszon-client
+        project-id: devopszon-client-3a1d6f64-58ec-14da-14eb-0403b3d979ef
+      annotations:
+        vault.hashicorp.com/agent-inject: 'false'
+    spec:
+      serviceAccountName: devopszon-client
+      imagePullSecrets:
+      - name: devopszon-client-registry-secret
+      
+      
+      containers:
+        - name: devopszon-client
+          image: docker.io/cahityusuf/devopszon-client:v1.0.15
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              exec /docker-entrypoint.sh nginx -g "daemon off;"
+          ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+          
+          resources:
+            requests:
+              memory: 128Mi
+              cpu: 100m
+            limits:
+              memory: 512Mi
+              cpu: 500m
+          
+             
