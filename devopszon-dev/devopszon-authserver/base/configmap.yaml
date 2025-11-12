@@ -1,13 +1,19 @@
 apiVersion: v1
+data:
+  a3: b3
+  ASPNETCORE_ENVIRONMENT: Production
+  ASPNETCORE_URLS: http://+:8080
+  App__HealthCheckUrl: http://localhost:8080/health-status
+  App__SelfUrl: https://auth.devopszon.com/
+  App__RedirectAllowedUrls: http://localhost:4200,https://*.devopszon.com,https://agent.devopszon.com,https://api.devopszon.com,https://console.devopszon.com,https://localhost:44307,https://localhost:44370,https://localhost:44346,https://localhost:44365,https://localhost:7284
+  AuthServer__Authority: https://auth.devopszon.com/
+  App__CorsOrigins: https://*.devopszon.com,https://agent.devopszon.com,https://api.devopszon.com,https://devopszon.com,https://console.devopszon.com,http://localhost:4200,https://localhost:44370,https://localhost:44365,https://localhost:44323,https://localhost:7284
+  a1: "100"
+  a2: jjhjbh
 kind: ConfigMap
 metadata:
+  labels:
+    app: devopszon-authserver
+    managed-by: devopszon
   name: devopszon-authserver-config
   namespace: devopszon
-data:
-  ASPNETCORE_ENVIRONMENT: "Production"
-  ASPNETCORE_URLS: "http://+:8080"
-  App__HealthCheckUrl: "http://localhost:8080/health-status"
-  App__SelfUrl: "https://auth.devopszon.com/"
-  App__RedirectAllowedUrls: "http://localhost:4200,https://*.devopszon.com,https://agent.devopszon.com,https://api.devopszon.com,https://console.devopszon.com,https://localhost:44307,https://localhost:44370,https://localhost:44346,https://localhost:44365,https://localhost:7284"
-  AuthServer__Authority: "https://auth.devopszon.com/"
-  App__CorsOrigins: "https://*.devopszon.com,https://agent.devopszon.com,https://api.devopszon.com,https://devopszon.com,https://console.devopszon.com,http://localhost:4200,https://localhost:44370,https://localhost:44365,https://localhost:44323,https://localhost:7284"
