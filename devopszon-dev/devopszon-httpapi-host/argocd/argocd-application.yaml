@@ -6,7 +6,7 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: devopszon
+  project: default
   source:
     repoURL: https://github.com:443/cahityusuf/devopszon.git
     targetRevision: HEAD
