@@ -8,7 +8,7 @@ metadata:
 spec:
   project: devopszon
   source:
-    repoURL: https://github.com:443/cahityusuf/devopszon.git
+    repoURL: https://github.com/user/devopszon.git
     targetRevision: HEAD
     path: devopszon-dev/devopszon-httpapi-host
   destination:
