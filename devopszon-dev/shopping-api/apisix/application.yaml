@@ -1,0 +1,48 @@
+---
+# Apisix Application Template (Updated)
+# Bu şablon, yeni deploy edilecek uygulamalar için Apisix Route kaynağını oluşturur.
+# Şablon, trafiği doğrudan ilgili Kubernetes Service'ine yönlendirir.
+#
+# Template parametreleri:
+# shopping-api - Uygulama ve Route adı için kullanılır
+# shopping - Uygulamanın bulunduğu namespace
+# 80 - Kubernetes Service portu
+# shopping-api.devopszon.com - Erişilecek host adı (örn: devopszon.com)
+# ./shopping-api/apisix - Erişilecek path (örn: /api/benim-uygulamam)
+# shopping-api - Hedef Kubernetes Service'in adı
+
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: shopping-api-route
+  namespace: shopping
+spec:
+  http:
+  - name: shopping-api-rule
+    match:
+      hosts:
+      - shopping-api.devopszon.com
+      paths:
+      # DİKKAT: Path'in sonuna "/*" eklenmesi, alt yolların da yakalanmasını sağlar.
+      # Örneğin /api/app/* -> /api/app/login, /api/app/users gibi tüm istekleri karşılar.
+      - ./shopping-api/apisix/*
+    backends:
+    # Trafik doğrudan Kubernetes Service'ine yönlendiriliyor.
+    # ApisixUpstream veya ApisixService kaynağına gerek yoktur.
+    - serviceName: shopping-api
+      servicePort: 80
+      weight: 100
+    plugins:
+    # CORS (Cross-Origin Resource Sharing) ayarları
+    - name: cors
+      enable: true
+      config:
+        allow_origins: "*"
+        allow_methods: "GET,POST,PUT,DELETE,OPTIONS"
+        allow_headers: "*"
+    # Gelen isteğin path'ini yeniden yazarak servise doğru iletilmesini sağlar.
+    # Örneğin: devopszon.com/api/app/login -> app-servisi:80/login
+    - name: proxy-rewrite
+      enable: true
+      config:
+        regex_uri: ["^./shopping-api/apisix/(.*)", "/$1"]

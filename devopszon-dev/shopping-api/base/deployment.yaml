@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: shopping
+  name: shopping-api
+  labels:
+    app: shopping-api
+    project-id: shopping-api-3a1d6bb4-a8f4-4399-c205-8fd1e0d49b0f
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      service: shopping-api
+      project-id: shopping-api-3a1d6bb4-a8f4-4399-c205-8fd1e0d49b0f
+  template:
+    metadata:
+      labels:
+        app: shopping-api
+        service: shopping-api
+        project-id: shopping-api-3a1d6bb4-a8f4-4399-c205-8fd1e0d49b0f
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'shopping-api'
+        vault.hashicorp.com/agent-inject-secret-env: 'secret/data/shopping-api'
+        vault.hashicorp.com/agent-inject-template-env: |
+          {{ with secret "secret/data/shopping-api" }}
+          {{ range $k, $v := .Data.data }}
+          {{ $k }}='{{ $v }}'
+          {{ end }}
+          {{ end }}
+    spec:
+      serviceAccountName: shopping-api
+      imagePullSecrets:
+      - name: shopping-api-registry-secret
+      
+      
+      containers:
+        - name: shopping-api
+          image: docker.io/cahityusuf/shopping-api:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set +x
+                if [ -f /vault/secrets/env ]; then
+                    grep -v '^#' /vault/secrets/env | sed 's/^/export /' > /tmp/formatted_env
+                    . /tmp/formatted_env >/dev/null 2>&1
+                fi
+                exec dotnet Shopping.API.dll
+          ports:
+          - name: http
+            containerPort: 80
+            protocol: TCP
+          
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 500m
+            limits:
+              memory: 1Gi
+              cpu: 1
+          
+             

@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: shopping-api
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: shopping
+  source:
+    repoURL: https://github.com:443/cahityusuf/devopszon.git
+    targetRevision: HEAD
+    path: devopszon-dev/shopping-api
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: shopping
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
