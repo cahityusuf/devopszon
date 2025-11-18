@@ -4,3 +4,4 @@ resources:
 - ./base
 - ./argocd
 - ./apisix
+- ./overlays/custom
