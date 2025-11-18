@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com:443/cahityusuf/devopszon.git
     targetRevision: HEAD
-    path: devopszon-dev/shopping-client
+    path: devopszon-dev/shopping-client/overlays/custom
   destination:
     server: https://kubernetes.default.svc
     namespace: default
