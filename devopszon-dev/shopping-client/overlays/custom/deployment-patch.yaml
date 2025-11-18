@@ -5,12 +5,21 @@ metadata:
 spec:
   template:
     spec:
-      containers:
-      - name: app
+      initContainers:
+      - name: git-sync
+        image: registry.k8s.io/git-sync/git-sync:v3.6.9
+        env:
+        - name: GIT_SYNC_REPO
+          value: "https://github.com/YOUR-ORG/YOUR-REPO"
+        - name: GIT_SYNC_BRANCH
+          value: "main"
+        - name: GIT_SYNC_DEST
+          value: "repo"
+        - name: GIT_SYNC_ONE_TIME
+          value: "true"
         volumeMounts:
-        - name: tmp-volume
-          mountPath: /tmp
+        - name: git-data
+          mountPath: /tmp/git
       volumes:
-      - name: tmp-volume
-        emptyDir:
-          sizeLimit: 1Gi
+      - name: git-data
+        emptyDir: {}
