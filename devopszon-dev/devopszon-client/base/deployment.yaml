@@ -33,7 +33,7 @@ spec:
       
       containers:
         - name: devopszon-client
-          image: docker.io/cahityusuf/devopszon-client:v1.0.20
+          image: docker.io/cahityusuf/devopszon-client:v1.0.21
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -45,10 +45,10 @@ spec:
           
           resources:
             requests:
-              memory: 128Mi
-              cpu: 100m
-            limits:
               memory: 512Mi
               cpu: 500m
+            limits:
+              memory: 1Gi
+              cpu: 1
           
              
