@@ -29,7 +29,10 @@ spec:
       serviceAccountName: devopszon-client
       imagePullSecrets:
       - name: devopszon-client-registry-secret
-      
+      volumes:
+      - name: config-volume
+        configMap:
+          name: devopszon-client-config
       
       containers:
         - name: devopszon-client
@@ -45,10 +48,14 @@ spec:
           
           resources:
             requests:
-              memory: 128Mi
-              cpu: 100m
-            limits:
               memory: 512Mi
               cpu: 500m
-          
-             
+            limits:
+              memory: 1Gi
+              cpu: 1
+          envFrom:
+            - configMapRef:
+                name: devopszon-client-config
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config   
