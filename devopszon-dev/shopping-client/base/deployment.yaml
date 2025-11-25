@@ -30,7 +30,25 @@ spec:
       serviceAccountName: shopping-client
       imagePullSecrets:
       - name: shopping-client-registry-secret
-      
+      volumes:
+      - name: kube-api-access
+        projected:
+          defaultMode: 420
+          sources:
+          - serviceAccountToken:
+              expirationSeconds: 3607
+              path: token
+              audience: vault
+          - configMap:
+              name: kube-root-ca.crt
+              items:
+              - key: ca.crt
+                path: ca.crt
+          - downwardAPI:
+              items:
+              - path: namespace
+                fieldRef:
+                  fieldPath: metadata.namespace
       
       containers:
         - name: shopping-client
