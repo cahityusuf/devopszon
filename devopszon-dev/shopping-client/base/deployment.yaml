@@ -41,7 +41,7 @@ spec:
       
       containers:
         - name: shopping-client
-          image: docker.io/cahityusuf/shopping-client:v19
+          image: docker.io/cahityusuf/shopping-client:latest
           command: ["/bin/sh", "-c"]
           args:
             - |

@@ -8,7 +8,17 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: shopping-client-test.com
+  - host: shopping-test.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: shopping-client
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  - host: www.shopping-test.com
     http:
       paths:
       - backend:
@@ -20,5 +30,6 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - shopping-client-test.com
+    - www.shopping-test.com
+    - shopping-test.com
     secretName: shopping-client-ingress-secret
