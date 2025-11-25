@@ -25,14 +25,8 @@ spec:
         project-id: featureflag-3a1dcf47-a152-f335-6ea1-14629ec564b8
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'featureflag'
-        vault.hashicorp.com/agent-inject-secret-env: 'secret/data/featureflag'
-        vault.hashicorp.com/agent-inject-template-env: |
-          {{ with secret "secret/data/featureflag" }}
-          {{ range $k, $v := .Data.data }}
-          {{ $k }}='{{ $v }}'
-          {{ end }}
-          {{ end }}
+        vault.hashicorp.com/agent-configmap: 'featureflag-vault-config'
+        vault.hashicorp.com/auth-config-audience: 'vault'
     spec:
       serviceAccountName: featureflag
       imagePullSecrets:
