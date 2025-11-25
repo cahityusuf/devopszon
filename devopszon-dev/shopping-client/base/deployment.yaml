@@ -29,7 +29,10 @@ spec:
       serviceAccountName: shopping-client
       imagePullSecrets:
       - name: shopping-client-registry-secret
-      
+      volumes:
+      - name: config-volume
+        configMap:
+          name: shopping-client-config
       
       containers:
         - name: shopping-client
@@ -50,5 +53,9 @@ spec:
             limits:
               memory: 1Gi
               cpu: 1
-          
-             
+          envFrom:
+            - configMapRef:
+                name: shopping-client-config
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config   
