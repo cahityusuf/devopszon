@@ -5,9 +5,9 @@
 #
 # Template parametreleri:
 # shopping-client - Uygulama ve Route adı için kullanılır
-# default - Uygulamanın bulunduğu namespace
+# shopping - Uygulamanın bulunduğu namespace
 # 8080 - Kubernetes Service portu
-# shopping-client.devopszon.com - Erişilecek host adı (örn: devopszon.com)
+# devopszon.com - Erişilecek host adı (örn: devopszon.com)
 # ./shopping-client/apisix - Erişilecek path (örn: /api/benim-uygulamam)
 # shopping-client - Hedef Kubernetes Service'in adı
 
@@ -15,13 +15,13 @@ apiVersion: apisix.apache.org/v2
 kind: ApisixRoute
 metadata:
   name: shopping-client-route
-  namespace: default
+  namespace: shopping
 spec:
   http:
   - name: shopping-client-rule
     match:
       hosts:
-      - shopping-client.devopszon.com
+      - devopszon.com
       paths:
       # DİKKAT: Path'in sonuna "/*" eklenmesi, alt yolların da yakalanmasını sağlar.
       # Örneğin /api/app/* -> /api/app/login, /api/app/users gibi tüm istekleri karşılar.
