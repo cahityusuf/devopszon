@@ -7,7 +7,7 @@
 # shopping-api - Uygulama ve Route adı için kullanılır
 # shopping - Uygulamanın bulunduğu namespace
 # 80 - Kubernetes Service portu
-# shopping-api.devopszon.com - Erişilecek host adı (örn: devopszon.com)
+# devopszon.com - Erişilecek host adı (örn: devopszon.com)
 # ./shopping-api/apisix - Erişilecek path (örn: /api/benim-uygulamam)
 # shopping-api - Hedef Kubernetes Service'in adı
 
@@ -21,7 +21,7 @@ spec:
   - name: shopping-api-rule
     match:
       hosts:
-      - shopping-api.devopszon.com
+      - devopszon.com
       paths:
       # DİKKAT: Path'in sonuna "/*" eklenmesi, alt yolların da yakalanmasını sağlar.
       # Örneğin /api/app/* -> /api/app/login, /api/app/users gibi tüm istekleri karşılar.

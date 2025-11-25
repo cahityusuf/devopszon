@@ -41,7 +41,7 @@ spec:
       
       containers:
         - name: shopping-api
-          image: docker.io/cahityusuf/shopping-api:v1-test
+          image: docker.io/cahityusuf/shopping-api:latest
           command: ["/bin/sh", "-c"]
           args:
             - |
