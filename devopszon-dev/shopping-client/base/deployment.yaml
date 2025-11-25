@@ -24,16 +24,7 @@ spec:
         service: shopping-client
         project-id: shopping-client-3a1d6bb4-a8f4-4399-c205-8fd1e0d49b0f
       annotations:
-        vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/role: 'shopping-client'
-        vault.hashicorp.com/agent-inject-audience: 'vault'
-        vault.hashicorp.com/agent-inject-secret-env: 'secret/data/shopping-client'
-        vault.hashicorp.com/agent-inject-template-env: |
-          {{ with secret "secret/data/shopping-client" }}
-          {{ range $k, $v := .Data.data }}
-          {{ $k }}='{{ $v }}'
-          {{ end }}
-          {{ end }}
+        vault.hashicorp.com/agent-inject: 'false'
     spec:
       serviceAccountName: shopping-client
       imagePullSecrets:
@@ -49,12 +40,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              set +x
-                if [ -f /vault/secrets/env ]; then
-                    grep -v '^#' /vault/secrets/env | sed 's/^/export /' > /tmp/formatted_env
-                    . /tmp/formatted_env >/dev/null 2>&1
-                fi
-                exec dotnet Shopping.Client.dll
+              exec dotnet Shopping.Client.dll
           ports:
           - name: http
             containerPort: 8080
