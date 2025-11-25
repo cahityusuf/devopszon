@@ -62,7 +62,7 @@ spec:
           headers:
             Content-Type: application/json
             X-DevOpsZon-Project-Id: 3a1d6bb4-a8f4-4399-c205-8fd1e0d49b0f
-            X-DevOpsZon-Service-Id: 3a1dcebc-c541-460e-2719-e0de295cab99
+            X-DevOpsZon-Service-Id: 3a1dcf1b-5bde-a596-23f6-cf3c45062ff6
             X-DevOpsZon-Cluster-Id: 3a1c4519-4907-3b06-9607-472dc801855b
             Authorization: Bearer devopszon-monitoring-secure-token-2024
           # Argo Events EventSource payload structure:
