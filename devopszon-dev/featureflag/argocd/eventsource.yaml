@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: featureflag-eventsource
+  namespace: argo-events
+  labels:
+    app: featureflag
+    project-id: 3a1dcf47-a152-f335-6ea1-14629ec564b8
+    service: featureflag
+    managed-by: devopszon
+    target-namespace: featureflag
+spec:
+  # BEST PRACTICE: Watch only POD events for maximum stability
+  # Pod events capture deployment updates, scaling, crashes, etc.
+  # Based on: https://github.com/argoproj/argo-events/tree/stable/examples
+  
+  # Template for EventSource pods
+  # FIX: Add securityContext and resources to prevent "too many open files"
+  template:
+    # PRODUCTION FIX: Init container to increase file descriptor limits
+    # Prevents "too many open files" errors in production
+    initContainers:
+    - name: increase-limits
+      image: busybox:latest
+      command:
+      - sh
+      - -c
+      - |
+        echo "Increasing file descriptor limits for EventSource stability..."
+        ulimit -n 65536 || true
+        sysctl -w fs.inotify.max_user_instances=8192 || true
+        sysctl -w fs.inotify.max_user_watches=524288 || true
+        echo "File descriptor limits increased successfully"
+      securityContext:
+        privileged: true
+    container:
+      securityContext:
+        capabilities:
+          add:
+          - SYS_RESOURCE  # Allow changing ulimit
+      resources:
+        limits:
+          cpu: 500m
+          memory: 512Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+  
+  resource:
+    pods:
+      version: v1
+      resource: pods
+      namespace: featureflag
+      filter:
+        labels:
+          - key: service
+            operation: ==
+            value: featureflag
+      eventTypes:
+        - ADD     # New pod created
+        - UPDATE  # Pod status changed (Running → CrashLoopBackOff, etc.)
+        - DELETE  # Pod terminated

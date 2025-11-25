@@ -1,0 +1,85 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: featureflag-sensor
+  namespace: argo-events
+  labels:
+    app: featureflag
+    project-id: 3a1dcf47-a152-f335-6ea1-14629ec564b8
+    service: featureflag
+    managed-by: devopszon
+    target-namespace: featureflag
+spec:
+  eventBusName: default
+  template:
+    serviceAccountName: devopszon-sensor-sa
+    # PRODUCTION FIX: Init container to increase file descriptor limits
+    # Prevents "too many open files" errors in production
+    initContainers:
+    - name: increase-limits
+      image: busybox:latest
+      command:
+      - sh
+      - -c
+      - |
+        echo "Increasing file descriptor limits for Sensor stability..."
+        ulimit -n 65536 || true
+        sysctl -w fs.inotify.max_user_instances=8192 || true
+        sysctl -w fs.inotify.max_user_watches=524288 || true
+        echo "File descriptor limits increased successfully"
+      securityContext:
+        privileged: true
+    container:
+      # BEST PRACTICE: Conservative resource limits for stability
+      # Based on Argo Events production recommendations
+      securityContext:
+        capabilities:
+          add:
+          - SYS_RESOURCE  # Allow changing ulimit to prevent "too many open files"
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "100m"
+        limits:
+          memory: "512Mi"
+          cpu: "500m"
+  
+  # SIMPLIFIED: Single dependency = minimal file descriptors
+  dependencies:
+    - name: pod-events
+      eventSourceName: featureflag-eventsource
+      eventName: pods
+  
+  # SIMPLIFIED: Single trigger, simple payload
+  triggers:
+    - template:
+        name: pod-status-webhook
+        # Simple condition: trigger on ANY pod event
+        conditions: "pod-events"
+        http:
+          url: https://api.devopszon.com/api/monitoring/events
+          method: POST
+          headers:
+            Content-Type: application/json
+            X-DevOpsZon-Project-Id: 3a1dcf47-a152-f335-6ea1-14629ec564b8
+            X-DevOpsZon-Service-Id: 3a1dcf47-a206-3c48-ff64-371e1cb343fb
+            X-DevOpsZon-Cluster-Id: 3a1c4519-4907-3b06-9607-472dc801855b
+            Authorization: Bearer devopszon-monitoring-secure-token-2024
+          # Argo Events EventSource payload structure:
+          # - body: Kubernetes resource object
+          # - type: Event type (ADDED, MODIFIED, DELETED)
+          # We need to construct: {"type": "...", "object": {...}}
+          payload:
+            - src:
+                dependencyName: pod-events
+                dataKey: type
+              dest: type
+            - src:
+                dependencyName: pod-events
+                dataKey: body
+              dest: object
+          # Retry configuration for transient failures
+          retryStrategy:
+            steps: 3
+            duration: 5s
+            factor: 2

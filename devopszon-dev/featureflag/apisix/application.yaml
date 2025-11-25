@@ -1,0 +1,48 @@
+---
+# Apisix Application Template (Updated)
+# Bu şablon, yeni deploy edilecek uygulamalar için Apisix Route kaynağını oluşturur.
+# Şablon, trafiği doğrudan ilgili Kubernetes Service'ine yönlendirir.
+#
+# Template parametreleri:
+# featureflag - Uygulama ve Route adı için kullanılır
+# featureflag - Uygulamanın bulunduğu namespace
+# 80 - Kubernetes Service portu
+# devopszon.com - Erişilecek host adı (örn: devopszon.com)
+# ./featureflag/apisix - Erişilecek path (örn: /api/benim-uygulamam)
+# featureflag - Hedef Kubernetes Service'in adı
+
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: featureflag-route
+  namespace: featureflag
+spec:
+  http:
+  - name: featureflag-rule
+    match:
+      hosts:
+      - devopszon.com
+      paths:
+      # DİKKAT: Path'in sonuna "/*" eklenmesi, alt yolların da yakalanmasını sağlar.
+      # Örneğin /api/app/* -> /api/app/login, /api/app/users gibi tüm istekleri karşılar.
+      - ./featureflag/apisix/*
+    backends:
+    # Trafik doğrudan Kubernetes Service'ine yönlendiriliyor.
+    # ApisixUpstream veya ApisixService kaynağına gerek yoktur.
+    - serviceName: featureflag
+      servicePort: 80
+      weight: 100
+    plugins:
+    # CORS (Cross-Origin Resource Sharing) ayarları
+    - name: cors
+      enable: true
+      config:
+        allow_origins: "*"
+        allow_methods: "GET,POST,PUT,DELETE,OPTIONS"
+        allow_headers: "*"
+    # Gelen isteğin path'ini yeniden yazarak servise doğru iletilmesini sağlar.
+    # Örneğin: devopszon.com/api/app/login -> app-servisi:80/login
+    - name: proxy-rewrite
+      enable: true
+      config:
+        regex_uri: ["^./featureflag/apisix/(.*)", "/$1"]
