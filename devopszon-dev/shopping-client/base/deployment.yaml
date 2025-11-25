@@ -28,6 +28,7 @@ spec:
         vault.hashicorp.com/agent-configmap: 'shopping-client-vault-config'
     spec:
       serviceAccountName: shopping-client
+      automountServiceAccountToken: false
       imagePullSecrets:
       - name: shopping-client-registry-secret
       volumes:
