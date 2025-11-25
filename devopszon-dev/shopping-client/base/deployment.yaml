@@ -26,7 +26,6 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-configmap: 'shopping-client-vault-config'
-        vault.hashicorp.com/tls-secret: 'vault-tls-client'
     spec:
       serviceAccountName: shopping-client
       imagePullSecrets:
