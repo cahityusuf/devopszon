@@ -26,6 +26,10 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/agent-configmap: 'devopszon-httpapi-host-vault-config'
+        vault.hashicorp.com/agent-limits-cpu: '500m'
+        vault.hashicorp.com/agent-limits-mem: '128Mi'
+        vault.hashicorp.com/agent-requests-cpu: '250m'
+        vault.hashicorp.com/agent-requests-mem: '64Mi'
     spec:
       serviceAccountName: devopszon-httpapi-host
       imagePullSecrets:
