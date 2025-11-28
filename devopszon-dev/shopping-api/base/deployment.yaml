@@ -5,7 +5,7 @@ metadata:
   name: shopping-api
   labels:
     app: shopping-api
-    project-id: shopping-api-3a1dddd3-ccaf-e37b-5e0e-549f795d8071
+    project-id: shopping-api-3a1dddf2-390e-65ff-840f-0566b1f3af16
 spec:
   replicas: 1
   strategy:
@@ -16,13 +16,13 @@ spec:
   selector:
     matchLabels:
       service: shopping-api
-      project-id: shopping-api-3a1dddd3-ccaf-e37b-5e0e-549f795d8071
+      project-id: shopping-api-3a1dddf2-390e-65ff-840f-0566b1f3af16
   template:
     metadata:
       labels:
         app: shopping-api
         service: shopping-api
-        project-id: shopping-api-3a1dddd3-ccaf-e37b-5e0e-549f795d8071
+        project-id: shopping-api-3a1dddf2-390e-65ff-840f-0566b1f3af16
       annotations:
         vault.hashicorp.com/agent-inject: 'false'
     spec:
