@@ -5,10 +5,10 @@ metadata:
   namespace: argo-events
   labels:
     app: shopping-api
-    project-id: 3a1dddf2-390e-65ff-840f-0566b1f3af16
+    project-id: 3a1ded54-de71-63ed-5284-2e28828a5c75
     service: shopping-api
     managed-by: devopszon
-    target-namespace: shopping
+    target-namespace: default
 spec:
   # BEST PRACTICE: Watch only POD events for maximum stability
   # Pod events capture deployment updates, scaling, crashes, etc.
@@ -50,7 +50,7 @@ spec:
     pods:
       version: v1
       resource: pods
-      namespace: shopping
+      namespace: default
       filter:
         labels:
           - key: service

@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: shopping
+  namespace: default
   name: shopping-api
   labels:
     app: shopping-api
-    project-id: shopping-api-3a1dddf2-390e-65ff-840f-0566b1f3af16
+    project-id: shopping-api-3a1ded54-de71-63ed-5284-2e28828a5c75
 spec:
   replicas: 1
   strategy:
@@ -16,13 +16,13 @@ spec:
   selector:
     matchLabels:
       service: shopping-api
-      project-id: shopping-api-3a1dddf2-390e-65ff-840f-0566b1f3af16
+      project-id: shopping-api-3a1ded54-de71-63ed-5284-2e28828a5c75
   template:
     metadata:
       labels:
         app: shopping-api
         service: shopping-api
-        project-id: shopping-api-3a1dddf2-390e-65ff-840f-0566b1f3af16
+        project-id: shopping-api-3a1ded54-de71-63ed-5284-2e28828a5c75
       annotations:
         vault.hashicorp.com/agent-inject: 'false'
     spec:
@@ -33,7 +33,7 @@ spec:
       
       containers:
         - name: shopping-api
-          image: docker.io/cahityusuf/shopping-api:v1
+          image: docker.io/cahityusuf/shopping-api:latest
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -46,9 +46,9 @@ spec:
           resources:
             requests:
               memory: 512Mi
-              cpu: 500m
+              cpu: 0.5
             limits:
-              memory: 1Gi
-              cpu: 1
+              memory: 512Mi
+              cpu: 0.5
           
              
