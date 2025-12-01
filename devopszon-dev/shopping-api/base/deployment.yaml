@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: default
+  namespace: shopping-api-3a1dee2d8edac3acbb90136b232373c8
   name: shopping-api
   labels:
     app: shopping-api
-    project-id: shopping-api-3a1dee1f-2f09-bdab-60e1-0512649f9ac7
+    project-id: shopping-api-3a1dee2d-8dda-a89e-1c26-097354d1aede
 spec:
   replicas: 1
   strategy:
@@ -16,13 +16,13 @@ spec:
   selector:
     matchLabels:
       service: shopping-api
-      project-id: shopping-api-3a1dee1f-2f09-bdab-60e1-0512649f9ac7
+      project-id: shopping-api-3a1dee2d-8dda-a89e-1c26-097354d1aede
   template:
     metadata:
       labels:
         app: shopping-api
         service: shopping-api
-        project-id: shopping-api-3a1dee1f-2f09-bdab-60e1-0512649f9ac7
+        project-id: shopping-api-3a1dee2d-8dda-a89e-1c26-097354d1aede
       annotations:
         vault.hashicorp.com/agent-inject: 'false'
     spec:

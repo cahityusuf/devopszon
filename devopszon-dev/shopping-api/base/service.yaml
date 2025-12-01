@@ -5,7 +5,7 @@ metadata:
     app: shopping-api
     service: shopping-api
   name: shopping-api
-  namespace: default
+  namespace: shopping-api-3a1dee2d8edac3acbb90136b232373c8
 spec:
   ports:
   - name: http

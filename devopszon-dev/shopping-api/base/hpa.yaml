@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: shopping-api-hpa
-  namespace: default
+  namespace: shopping-api-3a1dee2d8edac3acbb90136b232373c8
 spec:
   maxReplicas: 3
   metrics:
