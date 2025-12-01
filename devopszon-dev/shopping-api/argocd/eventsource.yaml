@@ -5,7 +5,7 @@ metadata:
   namespace: argo-events
   labels:
     app: shopping-api
-    project-id: 3a1dee08-6acb-0e6e-84c2-6868a0fdb8bd
+    project-id: 3a1dee1f-2f09-bdab-60e1-0512649f9ac7
     service: shopping-api
     managed-by: devopszon
     target-namespace: default
