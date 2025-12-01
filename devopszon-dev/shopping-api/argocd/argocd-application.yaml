@@ -13,7 +13,7 @@ spec:
     path: devopszon-dev/shopping-api
   destination:
     server: https://kubernetes.default.svc
-    namespace: shopping-api-3a1dedd0c856f212f86333c633f5bee8
+    namespace: default
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
