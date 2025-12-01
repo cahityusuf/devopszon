@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: shopping
+  namespace: default
   name: shopping-client
   labels:
     app: shopping-client
-    project-id: shopping-client-3a1d6bb4-a8f4-4399-c205-8fd1e0d49b0f
+    project-id: shopping-client-3a1dedc9-a27e-30de-567d-cab2935d78e0
 spec:
   replicas: 1
   strategy:
@@ -16,40 +16,20 @@ spec:
   selector:
     matchLabels:
       service: shopping-client
-      project-id: shopping-client-3a1d6bb4-a8f4-4399-c205-8fd1e0d49b0f
+      project-id: shopping-client-3a1dedc9-a27e-30de-567d-cab2935d78e0
   template:
     metadata:
       labels:
         app: shopping-client
         service: shopping-client
-        project-id: shopping-client-3a1d6bb4-a8f4-4399-c205-8fd1e0d49b0f
+        project-id: shopping-client-3a1dedc9-a27e-30de-567d-cab2935d78e0
       annotations:
-        vault.hashicorp.com/agent-inject: 'true'
-        vault.hashicorp.com/agent-configmap: 'shopping-client-vault-config'
+        vault.hashicorp.com/agent-inject: 'false'
     spec:
       serviceAccountName: shopping-client
-      automountServiceAccountToken: false
       imagePullSecrets:
       - name: shopping-client-registry-secret
-      volumes:
-      - name: kube-api-access
-        projected:
-          defaultMode: 420
-          sources:
-          - serviceAccountToken:
-              expirationSeconds: 3607
-              path: token
-              audience: vault
-          - configMap:
-              name: kube-root-ca.crt
-              items:
-              - key: ca.crt
-                path: ca.crt
-          - downwardAPI:
-              items:
-              - path: namespace
-                fieldRef:
-                  fieldPath: metadata.namespace
+      
       
       containers:
         - name: shopping-client
@@ -57,12 +37,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              set +x
-                if [ -f /vault/secrets/env ]; then
-                    grep -v '^#' /vault/secrets/env | sed 's/^/export /' > /tmp/formatted_env
-                    . /tmp/formatted_env >/dev/null 2>&1
-                fi
-                exec dotnet Shopping.Client.dll
+              exec dotnet Shopping.Client.dll
           ports:
           - name: http
             containerPort: 8080
@@ -71,9 +46,9 @@ spec:
           resources:
             requests:
               memory: 512Mi
-              cpu: 500m
+              cpu: 0.5
             limits:
-              memory: 1Gi
-              cpu: 1
+              memory: 512Mi
+              cpu: 0.5
           
              

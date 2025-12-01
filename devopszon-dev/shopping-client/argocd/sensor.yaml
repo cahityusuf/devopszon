@@ -5,10 +5,10 @@ metadata:
   namespace: argo-events
   labels:
     app: shopping-client
-    project-id: 3a1d6bb4-a8f4-4399-c205-8fd1e0d49b0f
+    project-id: 3a1dedc9-a27e-30de-567d-cab2935d78e0
     service: shopping-client
     managed-by: devopszon
-    target-namespace: shopping
+    target-namespace: default
 spec:
   eventBusName: default
   template:
@@ -61,8 +61,8 @@ spec:
           method: POST
           headers:
             Content-Type: application/json
-            X-DevOpsZon-Project-Id: 3a1d6bb4-a8f4-4399-c205-8fd1e0d49b0f
-            X-DevOpsZon-Service-Id: 3a1dcf1b-5bde-a596-23f6-cf3c45062ff6
+            X-DevOpsZon-Project-Id: 3a1dedc9-a27e-30de-567d-cab2935d78e0
+            X-DevOpsZon-Service-Id: 3a1dedc9-a330-cdd0-76b1-800d42d2b117
             X-DevOpsZon-Cluster-Id: 3a1c4519-4907-3b06-9607-472dc801855b
             Authorization: Bearer devopszon-monitoring-secure-token-2024
           # Argo Events EventSource payload structure:
