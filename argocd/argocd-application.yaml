@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: shopping-client
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: shopping
+  source:
+    repoURL: https://github.com/devopszon/devopszon-dev-shopping-client-3a1df30c-9572-35f7-af29-75f4fcdabe5c.git
+    targetRevision: HEAD
+    path: .
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: shopping-client-3a1df30c957235f7af2975f4fcdabe5c
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
