@@ -33,7 +33,7 @@ spec:
       
       containers:
         - name: shopping-api
-          image: docker.io/cahityusuf/shopping-api:v1
+          image: docker.io/cahityusuf/shopping-api:v2
           command: ["/bin/sh", "-c"]
           args:
             - |
