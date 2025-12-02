@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com:443/cahityusuf/devopszon.git
     targetRevision: HEAD
-    path: devopszon-dev/shopping-api
+    path: .
   destination:
     server: https://kubernetes.default.svc
     namespace: shopping-api-3a1dee2d8edac3acbb90136b232373c8
