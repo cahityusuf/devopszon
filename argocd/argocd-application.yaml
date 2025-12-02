@@ -8,7 +8,7 @@ metadata:
 spec:
   project: shopping
   source:
-    repoURL: https://github.com/devopszon/saas-host-shopping-client-3a1df356-1952-5a09-ef9e-d3b8631ddfbc.git
+    repoURL: https://github.com/devopszon/saas-host-shopping-client-3a1df36e-9dd4-9a92-fd81-33de1f37c48c.git
     targetRevision: HEAD
     path: .
   destination:
