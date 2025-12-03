@@ -4,33 +4,33 @@
 # Şablon, trafiği doğrudan ilgili Kubernetes Service'ine yönlendirir.
 #
 # Template parametreleri:
-# devopszon-httpapi-host - Uygulama ve Route adı için kullanılır
+# devopszon-client - Uygulama ve Route adı için kullanılır
 # devopszon - Uygulamanın bulunduğu namespace
-# 8080 - Kubernetes Service portu
-# devopszon-httpapi-host.devopszon.com - Erişilecek host adı (örn: devopszon.com)
-# ./devopszon-httpapi-host/apisix - Erişilecek path (örn: /api/benim-uygulamam)
-# devopszon-httpapi-host - Hedef Kubernetes Service'in adı
+# 80 - Kubernetes Service portu
+# devopszon-client.devopszon.com - Erişilecek host adı (örn: devopszon.com)
+# ./devopszon-client/apisix - Erişilecek path (örn: /api/benim-uygulamam)
+# devopszon-client - Hedef Kubernetes Service'in adı
 
 apiVersion: apisix.apache.org/v2
 kind: ApisixRoute
 metadata:
-  name: devopszon-httpapi-host-route
+  name: devopszon-client-route
   namespace: devopszon
 spec:
   http:
-  - name: devopszon-httpapi-host-rule
+  - name: devopszon-client-rule
     match:
       hosts:
-      - devopszon-httpapi-host.devopszon.com
+      - devopszon-client.devopszon.com
       paths:
       # DİKKAT: Path'in sonuna "/*" eklenmesi, alt yolların da yakalanmasını sağlar.
       # Örneğin /api/app/* -> /api/app/login, /api/app/users gibi tüm istekleri karşılar.
-      - ./devopszon-httpapi-host/apisix/*
+      - ./devopszon-client/apisix/*
     backends:
     # Trafik doğrudan Kubernetes Service'ine yönlendiriliyor.
     # ApisixUpstream veya ApisixService kaynağına gerek yoktur.
-    - serviceName: devopszon-httpapi-host
-      servicePort: 8080
+    - serviceName: devopszon-client
+      servicePort: 80
       weight: 100
     plugins:
     # CORS (Cross-Origin Resource Sharing) ayarları
@@ -45,4 +45,4 @@ spec:
     - name: proxy-rewrite
       enable: true
       config:
-        regex_uri: ["^./devopszon-httpapi-host/apisix/(.*)", "/$1"]
+        regex_uri: ["^./devopszon-client/apisix/(.*)", "/$1"]

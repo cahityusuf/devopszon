@@ -1,14 +1,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: devopszon-httpapi-host
+  name: devopszon-client
   namespace: devopszon
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: devopszon-httpapi-host
-  maxReplicas: 1
+    name: devopszon-client
+  maxReplicas: 3
   minReplicas: 1
   metrics:
   - type: Resource
