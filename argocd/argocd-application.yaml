@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: shopping-client
+  name: devopszon-httpapi-host
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: shopping
+  project: devopszon
   source:
-    repoURL: https://github.com/devopszon/saas-host-shopping-client-3a1df36e-9dd4-9a92-fd81-33de1f37c48c.git
+    repoURL: https://github.com/devopszon/devopszon-dev-devopszon-httpapi-host-3a1d864e-526b-0f33-2db3-9fbaad258b59.git
     targetRevision: HEAD
     path: .
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: devopszon
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
